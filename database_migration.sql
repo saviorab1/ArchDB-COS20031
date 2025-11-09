@@ -129,6 +129,7 @@ CREATE TABLE IF NOT EXISTS registration (
     competition_id INT NOT NULL,
     equipment_used ENUM('RECURVE', 'COMPOUND', 'RECURVE_BAREBOW', 'COMPOUND_BAREBOW', 'LONGBOW'),
     round_id INT,
+    status ENUM('pending', 'approved', 'rejected', 'cancelled') DEFAULT 'pending',
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (archer_id) REFERENCES archer(id) ON DELETE CASCADE,
@@ -137,7 +138,8 @@ CREATE TABLE IF NOT EXISTS registration (
     UNIQUE KEY unique_registration (archer_id, competition_id),
     INDEX idx_archer_id (archer_id),
     INDEX idx_competition_id (competition_id),
-    INDEX idx_round_id (round_id)
+    INDEX idx_round_id (round_id),
+    INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Score Table

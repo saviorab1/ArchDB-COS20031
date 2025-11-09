@@ -15,15 +15,21 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-brand">
-                <img src="../css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
-                <span class="brand-text">Archery Score System</span>
+                <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 1rem; color: inherit;">
+                    <img src="../css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
+                    <span class="brand-text">Archery Score System</span>
+                </a>
             </div>
-            <div class="nav-links">
+            <div class="nav-links" id="nav-links">
                 <a href="../index.html" class="nav-link">Home</a>
                 <a href="archers.html" class="nav-link">Archers</a>
                 <a href="scores.html" class="nav-link active">Scores</a>
                 <a href="competitions.html" class="nav-link">Competitions</a>
                 <a href="results.html" class="nav-link">Results</a>
+                <div style="margin-left: auto; display: flex; gap: 15px; align-items: center;">
+                    <span id="user-info" style="color: white; font-size: 14px;"></span>
+                    <button onclick="logout()" style="padding: 8px 20px; background: #ff6b6b; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Logout</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -44,14 +50,13 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Archer *</label>
-                        <select name="archerId" required>
+                        <select name="archerId" id="archer-select" required>
                             <option value="">Select Archer</option>
-                            <option value="1">Aiden Dinh</option>
-                            <option value="2">Thien Anh Doan</option>
-                            <option value="3">Dat Phong Luu</option>
-                            <option value="4">Vo Huy</option>
-                            <option value="5">Nguyen Do Gia Huy</option>
+                            <!-- Options will be populated dynamically -->
                         </select>
+                        <div id="archer-info" style="display: none; margin-top: 0.5rem; padding: 0.5rem; background: rgba(0, 4, 255, 0.05); border-radius: 0.5rem; border: 1px solid rgba(0, 4, 255, 0.1);">
+                            <strong>Entering scores for:</strong> <span id="selected-archer-name"></span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Round *</label>
@@ -163,34 +168,186 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <img src="../css/ArchDB_logo.png" alt="ArchDB" class="footer-logo">
-                    <span>Archery Score System</span>
-                </div>
-                <div class="footer-links">
-                    <a href="#about">About</a>
-                    <a href="#help">Help</a>
-                    <a href="#contact">Contact</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Archery Score Recording System. Built for precision and excellence.</p>
-            </div>
-        </div>
-    </footer>
 
     <!-- Notification Container -->
     <div id="notification-container" class="notification-container"></div>
 
     <script>
+        // Check authentication on page load
+        async function checkAuth() {
+            try {
+                const response = await fetch('../../api/check_auth.php', {
+                    credentials: 'include'
+                });
+
+                if (!response.ok || response.status === 401) {
+                    // Not authenticated, redirect to login
+                    window.location.href = '../login.html';
+                    return false;
+                }
+
+                const data = await response.json();
+                if (data.authenticated) {
+                    // Display user info
+                    const userRole = data.user.role === 'archer' ? '🏹 Archer' : '🎯 Manager';
+                    document.getElementById('user-info').textContent = userRole;
+                    return true;
+                } else {
+                    window.location.href = '../login.html';
+                    return false;
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                window.location.href = '../login.html';
+                return false;
+            }
+        }
+
+        // Logout function
+        async function logout() {
+            try {
+                await fetch('../../api/logout.php', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+            window.location.href = '../login.html';
+        }
+
+        // Store current user info
+        let currentUserRole = null;
+        let currentArcherInfo = null;
+
+        // Setup archer selection based on user role
+        async function setupArcherSelection() {
+            try {
+                // Get current user info
+                const response = await fetch('../../api/check_auth.php', {
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const data = await response.json();
+                if (data.authenticated) {
+                    currentUserRole = data.user.role;
+
+                    if (currentUserRole === 'archer') {
+                        // For archers, get their own profile info
+                        const archerResponse = await fetch('../../api/get_archers.php', {
+                            credentials: 'include'
+                        });
+
+                        if (archerResponse.ok) {
+                            const archerData = await archerResponse.json();
+                            if (archerData.success && archerData.archers.length > 0) {
+                                currentArcherInfo = archerData.archers[0];
+                                setupArcherForArcher(currentArcherInfo);
+                            }
+                        }
+                    } else {
+                        // For managers, populate dropdown with all archers
+                        await setupArcherForManager();
+                    }
+                }
+            } catch (error) {
+                console.error('Error setting up archer selection:', error);
+            }
+        }
+
+        // Setup for archers - auto-select their profile
+        function setupArcherForArcher(archerInfo) {
+            const select = document.getElementById('archer-select');
+            const infoDiv = document.getElementById('archer-info');
+            const infoName = document.getElementById('selected-archer-name');
+
+            // Hide the select dropdown
+            select.style.display = 'none';
+
+            // Show the info div
+            infoDiv.style.display = 'block';
+            infoName.textContent = archerInfo.full_name;
+
+            // Set the value programmatically
+            select.value = archerInfo.id;
+        }
+
+        // Setup for managers - populate dropdown
+        async function setupArcherForManager() {
+            try {
+                const response = await fetch('../../api/get_archers.php', {
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    const select = document.getElementById('archer-select');
+                    const infoDiv = document.getElementById('archer-info');
+
+                    // Clear existing options except the first one
+                    select.innerHTML = '<option value="">Select Archer</option>';
+
+                    // Add all archers
+                    data.archers.forEach(archer => {
+                        const option = document.createElement('option');
+                        option.value = archer.id;
+                        option.textContent = archer.full_name;
+                        select.appendChild(option);
+                    });
+
+                    // Show select, hide info
+                    select.style.display = 'block';
+                    infoDiv.style.display = 'none';
+
+                    // Add change listener to show selected archer info
+                    select.addEventListener('change', function() {
+                        const selectedOption = select.options[select.selectedIndex];
+                        if (selectedOption.value) {
+                            document.getElementById('selected-archer-name').textContent = selectedOption.textContent;
+                            document.getElementById('archer-info').style.display = 'block';
+                        } else {
+                            document.getElementById('archer-info').style.display = 'none';
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading archers for manager:', error);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Update score total on input
-            document.querySelectorAll('.arrow-input').forEach(input => {
-                input.addEventListener('input', updateScoreTotal);
+            // Check authentication first
+            checkAuth().then(isAuthenticated => {
+                if (!isAuthenticated) {
+                    return;
+                }
+
+                // Setup archer selection based on role
+                setupArcherSelection();
+
+                // Update score total on input
+                document.querySelectorAll('.arrow-input').forEach(input => {
+                    input.addEventListener('input', updateScoreTotal);
+                });
+
+                // Global HTMX config
+                htmx.config.globalViewTransitions = true;
+                htmx.config.useTemplateFragments = true;
+
+                // Global error handling
+                document.addEventListener('htmx:afterRequest', function(evt) {
+                    if (evt.detail.xhr.status >= 400) {
+                        showNotification('An error occurred. Please try again.', 'error');
+                    }
+                });
             });
         });
 

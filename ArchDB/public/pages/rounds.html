@@ -15,15 +15,21 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-brand">
-                <img src="../css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
-                <span class="brand-text">Archery Score System</span>
+                <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 1rem; color: inherit;">
+                    <img src="../css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
+                    <span class="brand-text">Archery Score System</span>
+                </a>
             </div>
-            <div class="nav-links">
+            <div class="nav-links" id="nav-links">
                 <a href="../index.html" class="nav-link">Home</a>
                 <a href="archers.html" class="nav-link">Archers</a>
                 <a href="scores.html" class="nav-link">Scores</a>
                 <a href="competitions.html" class="nav-link">Competitions</a>
                 <a href="results.html" class="nav-link">Results</a>
+                <div style="margin-left: auto; display: flex; gap: 15px; align-items: center;">
+                    <span id="user-info" style="color: white; font-size: 14px;"></span>
+                    <button onclick="logout()" style="padding: 8px 20px; background: #ff6b6b; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Logout</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -249,27 +255,73 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <img src="../css/ArchDB_logo.png" alt="ArchDB" class="footer-logo">
-                    <span>Archery Score System</span>
-                </div>
-                <div class="footer-links">
-                    <a href="#about">About</a>
-                    <a href="#help">Help</a>
-                    <a href="#contact">Contact</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Archery Score Recording System. Built for precision and excellence.</p>
-            </div>
-        </div>
-    </footer>
 
     <!-- Notification Container -->
     <div id="notification-container" class="notification-container"></div>
+
+    <script>
+        // Check authentication on page load
+        async function checkAuth() {
+            try {
+                const response = await fetch('../../api/check_auth.php', {
+                    credentials: 'include'
+                });
+
+                if (!response.ok || response.status === 401) {
+                    // Not authenticated, redirect to login
+                    window.location.href = '../login.html';
+                    return false;
+                }
+
+                const data = await response.json();
+                if (data.authenticated) {
+                    // Display user info
+                    const userRole = data.user.role === 'archer' ? '🏹 Archer' : '🎯 Manager';
+                    document.getElementById('user-info').textContent = userRole;
+                    return true;
+                } else {
+                    window.location.href = '../login.html';
+                    return false;
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                window.location.href = '../login.html';
+                return false;
+            }
+        }
+
+        // Logout function
+        async function logout() {
+            try {
+                await fetch('../../api/logout.php', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+            window.location.href = '../login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication first
+            checkAuth().then(isAuthenticated => {
+                if (!isAuthenticated) {
+                    return;
+                }
+
+                // Global HTMX config
+                htmx.config.globalViewTransitions = true;
+                htmx.config.useTemplateFragments = true;
+
+                // Global error handling
+                document.addEventListener('htmx:afterRequest', function(evt) {
+                    if (evt.detail.xhr.status >= 400) {
+                        showNotification('An error occurred. Please try again.', 'error');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
