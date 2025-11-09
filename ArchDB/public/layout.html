@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archery Score System</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="js/archery.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/ui.js"></script>
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <h1>🏹 Archery Score System</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pages/archers.html">Archers</a></li>
+            <li><a href="pages/scores.html">Scores</a></li>
+            <li><a href="pages/competitions.html">Competitions</a></li>
+            <li><a href="pages/results.html">Results</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Page content goes here -->
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Archery Score Recording System</p>
+    </footer>
+
+    <!-- HTMX Configuration -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Global HTMX config
+            htmx.config.globalViewTransitions = true;
+            htmx.config.useTemplateFragments = true;
+
+            // Global error handling
+            document.addEventListener('htmx:afterRequest', function(evt) {
+                if (evt.detail.xhr.status >= 400) {
+                    showNotification('An error occurred. Please try again.', 'error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

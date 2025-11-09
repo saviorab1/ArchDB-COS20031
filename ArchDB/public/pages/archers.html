@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archer Management</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="../js/archery.js"></script>
+    <script src="../js/validation.js"></script>
+    <script src="../js/ui.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="archers.html">Archers</a>
+        <a href="scores.html">Scores</a>
+        <a href="competitions.html">Competitions</a>
+    </nav>
+
+    <main>
+        <h1>Archer Management</h1>
+
+        <button onclick="showAddArcherModal()">Add Archer</button>
+
+        <div id="archers-list">
+            <!-- Archers will be loaded here -->
+        </div>
+    </main>
+
+    <div id="archer-modal" style="display: none;">
+        <form id="archer-form">
+            <input name="firstName" placeholder="First Name" required>
+            <input name="lastName" placeholder="Last Name" required>
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+            <input type="date" name="dateOfBirth" required>
+            <select name="equipment">
+                <option value="RECURVE">Recurve</option>
+                <option value="COMPOUND">Compound</option>
+                <option value="BAREBOW">Barebow</option>
+                <option value="LONGBOW">Longbow</option>
+            </select>
+            <div id="category-display"></div>
+            <input type="email" name="email" placeholder="Email">
+            <input type="tel" name="phoneNumber" placeholder="Phone">
+            <button type="submit">Save</button>
+            <button type="button" onclick="hideModal()">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+        function showAddArcherModal() {
+            document.getElementById('archer-modal').style.display = 'block';
+        }
+
+        function hideModal() {
+            document.getElementById('archer-modal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('gender').addEventListener('change', updateCategoryDisplay);
+            document.getElementById('birthDate').addEventListener('change', updateCategoryDisplay);
+            document.getElementById('equipment').addEventListener('change', updateCategoryDisplay);
+        });
+    </script>
+</body>
+</html>

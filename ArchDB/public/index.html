@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archery Score System</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="js/archery.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/ui.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="pages/archers.html">Archers</a>
+        <a href="pages/scores.html">Scores</a>
+        <a href="pages/competitions.html">Competitions</a>
+    </nav>
+
+    <main>
+        <h1>Archery Score System</h1>
+        <p>Welcome to the archery scoring system.</p>
+
+        <div id="stats">
+            <!-- Stats will be loaded here -->
+        </div>
+
+        <div id="recent-activity">
+            <!-- Recent activity will be loaded here -->
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Global HTMX config
+            htmx.config.globalViewTransitions = true;
+        });
+    </script>
+</body>
+</html>

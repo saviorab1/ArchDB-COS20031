@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Score Entry</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="../js/archery.js"></script>
+    <script src="../js/validation.js"></script>
+    <script src="../js/ui.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="archers.html">Archers</a>
+        <a href="scores.html">Scores</a>
+        <a href="competitions.html">Competitions</a>
+    </nav>
+
+    <main>
+        <h1>Score Entry</h1>
+
+        <form id="score-form">
+            <select name="archerId" required>
+                <option value="">Select Archer</option>
+            </select>
+
+            <select name="roundId" required>
+                <option value="">Select Round</option>
+            </select>
+
+            <select name="competitionId">
+                <option value="">Practice Score</option>
+            </select>
+
+            <input type="date" name="scoreDate" required>
+
+            <div>
+                <h3>Arrow Scores (0-10)</h3>
+                <input type="number" min="0" max="10" class="arrow-input" name="arrow1" required>
+                <input type="number" min="0" max="10" class="arrow-input" name="arrow2" required>
+                <input type="number" min="0" max="10" class="arrow-input" name="arrow3" required>
+                <input type="number" min="0" max="10" class="arrow-input" name="arrow4" required>
+                <input type="number" min="0" max="10" class="arrow-input" name="arrow5" required>
+                <input type="number" min="0" max="10" class="arrow-input" name="arrow6" required>
+                <div id="score-total">Total: 0</div>
+            </div>
+
+            <button type="submit">Submit Score</button>
+        </form>
+
+        <div id="recent-scores">
+            <!-- Recent scores will be loaded here -->
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('input', function(e) {
+                if (e.target.classList.contains('arrow-input')) {
+                    updateScoreTotal();
+                }
+            });
+            updateScoreTotal();
+        });
+    </script>
+</body>
+</html>
