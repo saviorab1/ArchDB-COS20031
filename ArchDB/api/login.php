@@ -1,52 +1,116 @@
 <?php
+/**
+ * Login API Endpoint
+ * Authenticates user and creates session
+ */
+
 header("Content-Type: application/json");
-include '../db.php';
+
+require_once '../../db.php';
+require_once 'auth_helper.php';
 
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
-// check DB connection
+// Check DB connection
 if (!$conn) {
-    echo json_encode(["success" => false, "message" => "DB connection failed"]);
+    header('HTTP/1.1 503 Service Unavailable');
+    echo json_encode(["success" => false, "message" => "Database connection failed"]);
     exit;
 }
 
-// Get input from POST Json
+// Get input from POST JSON
 $data = json_decode(file_get_contents('php://input'), true);
-$username = trim($data['username'] ?? '');
+$username = sanitizeInput($data['username'] ?? '');
 $password = $data['password'] ?? '';
 
-if (!$username || !$password) {
-    echo json_encode(['success' => false, 'message' => 'Missing username or password']);
+// Validate input
+if (empty($username) || empty($password)) {
+    header('HTTP/1.1 400 Bad Request');
+    echo json_encode([
+        'success' => false,
+        'message' => 'Username and password are required'
+    ]);
     exit;
 }
 
-// get User from DB
-$sql = 'SELECT * FROM users WHERE username = ?';
-$stmt = $conn->prepare($sql);
+// Query user from database
+$stmt = $conn->prepare('SELECT id, username, password_hash, email, role, archer_id, manager_id, is_active FROM users WHERE username = ? AND is_active = TRUE');
+
+if (!$stmt) {
+    error_log("Prepare error: " . $conn->error);
+    header('HTTP/1.1 500 Internal Server Error');
+    echo json_encode(['success' => false, 'message' => 'Database error']);
+    exit;
+}
+
 $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($row = $result->fetch_assoc()) {
-    // compare password hash
-    if (password_verify($password, $row['password_hash'])) {
+if ($result->num_rows === 0) {
+    header('HTTP/1.1 401 Unauthorized');
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid username or password'
+    ]);
+    $stmt->close();
+    exit;
+}
+
+$user = $result->fetch_assoc();
+$stmt->close();
+
+// Verify password
+if (!password_verify($password, $user['password_hash'])) {
+    header('HTTP/1.1 401 Unauthorized');
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid username or password'
+    ]);
+    exit;
+}
+
+// Create session
+if (!createSession(
+    $user['id'],
+    $user['role'],
+    $user['archer_id'],
+    $user['manager_id']
+)) {
+    header('HTTP/1.1 500 Internal Server Error');
+    echo json_encode([
+        'success' => false,
+        'message' => 'Failed to create session'
+    ]);
+    exit;
+}
+
+// Update last login timestamp
+$updateStmt = $conn->prepare('UPDATE users SET last_login = NOW() WHERE id = ?');
+if ($updateStmt) {
+    $updateStmt->bind_param("i", $user['id']);
+    $updateStmt->execute();
+    $updateStmt->close();
+}
+
+// Log activity
+logActivity($conn, $user['id'], 'LOGIN', 'User logged in from ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+
+header('HTTP/1.1 200 OK');
         echo json_encode([
             'success' => true,
             'message' => 'Login successful',
             'user' => [
-                'id' => $row['id'],
-                'username' => $row['username'],
-                'role' => $row['role']
-            ]
-        ]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid password']);
-    }
-} else {
-    echo json_encode(['success' => false, 'message' => 'User not found']);
-}
+        'id' => $user['id'],
+        'username' => $user['username'],
+        'email' => $user['email'],
+        'role' => $user['role'],
+        'archer_id' => $user['archer_id'],
+        'manager_id' => $user['manager_id']
+    ]
+]);
 
-$stmt->close();
 $conn->close();
 ?>
+

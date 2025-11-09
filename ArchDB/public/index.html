@@ -18,12 +18,16 @@
                 <img src="css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
                 <span class="brand-text">Archery Score System</span>
             </div>
-            <div class="nav-links">
+            <div class="nav-links" id="nav-links">
                 <a href="index.html" class="nav-link active">Home</a>
                 <a href="pages/archers.html" class="nav-link">Archers</a>
                 <a href="pages/scores.html" class="nav-link">Scores</a>
                 <a href="pages/competitions.html" class="nav-link">Competitions</a>
                 <a href="pages/results.html" class="nav-link">Results</a>
+                <div style="margin-left: auto; display: flex; gap: 15px; align-items: center;">
+                    <span id="user-info" style="color: white; font-size: 14px;"></span>
+                    <button onclick="logout()" style="padding: 8px 20px; background: #ff6b6b; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Logout</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -133,7 +137,56 @@
     <div id="notification-container" class="notification-container"></div>
 
     <script>
+        // Check authentication on page load
+        async function checkAuth() {
+            try {
+                const response = await fetch('../api/check_auth.php', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok || response.status === 401) {
+                    // Not authenticated, redirect to login
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                
+                const data = await response.json();
+                if (data.authenticated) {
+                    // Display user info
+                    const userRole = data.user.role === 'archer' ? '🏹 Archer' : '🎯 Manager';
+                    document.getElementById('user-info').textContent = userRole;
+                    return true;
+                } else {
+                    window.location.href = 'login.html';
+                    return false;
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                window.location.href = 'login.html';
+                return false;
+            }
+        }
+
+        // Logout function
+        async function logout() {
+            try {
+                await fetch('../api/logout.php', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+            window.location.href = 'login.html';
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication first
+            checkAuth().then(isAuthenticated => {
+                if (!isAuthenticated) {
+                    return;
+                }
+
             // Global HTMX config
             htmx.config.globalViewTransitions = true;
             htmx.config.useTemplateFragments = true;
@@ -147,58 +200,69 @@
                 if (evt.detail.xhr.status >= 400) {
                     showNotification('An error occurred. Please try again.', 'error');
                 }
+                });
             });
         });
 
         function loadStats() {
-            // Load stats via HTMX or fetch
-            // For now, show placeholder data
-            setTimeout(() => {
-                document.getElementById('total-archers').textContent = '24';
-                document.getElementById('total-scores').textContent = '156';
-                document.getElementById('active-competitions').textContent = '3';
-                document.getElementById('recent-scores').textContent = '28';
-            }, 500);
+            // Load stats from database API
+            fetch('../api/get_dashboard_stats.php', {
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('total-archers').textContent = data.stats.total_archers || '0';
+                    document.getElementById('total-scores').textContent = data.stats.total_scores || '0';
+                    document.getElementById('active-competitions').textContent = data.stats.active_competitions || '0';
+                    document.getElementById('recent-scores').textContent = data.stats.recent_scores || '0';
+                }
+            })
+            .catch(error => console.error('Error loading stats:', error));
         }
 
         function loadRecentActivity() {
-            // Load recent activity via HTMX or fetch
-            // For now, show placeholder data
-            setTimeout(() => {
-                document.getElementById('recent-scores-list').innerHTML = `
-                    <div class="activity-item">
-                        <div class="activity-primary">Aiden Dinh - 58 points</div>
-                        <div class="activity-secondary">WA 1440 Round • 2 hours ago</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-primary">Thien Anh Doan - 64 points</div>
-                        <div class="activity-secondary">FITA 70m Round • 4 hours ago</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-primary">Dat Phong Luu - 61 points</div>
-                        <div class="activity-secondary">WA 1440 Round • 6 hours ago</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-primary">Vo Huy - 55 points</div>
-                        <div class="activity-secondary">Indoor 18m Round • 8 hours ago</div>
-                    </div>
-                `;
+            // Load recent activity from database API
+            fetch('../api/get_recent_activity.php', {
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Load recent scores
+                    let scoresHTML = '';
+                    if (data.recent_scores.length > 0) {
+                        data.recent_scores.forEach(score => {
+                            scoresHTML += `
+                                <div class="activity-item">
+                                    <div class="activity-primary">${score.archer_name} - ${score.points} points</div>
+                                    <div class="activity-secondary">${score.round_name} • ${score.date}</div>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        scoresHTML = '<p style="color: #999; padding: 20px;">No scores recorded yet</p>';
+                    }
+                    document.getElementById('recent-scores-list').innerHTML = scoresHTML;
 
-                document.getElementById('upcoming-competitions').innerHTML = `
-                    <div class="activity-item">
-                        <div class="activity-primary">Swinburne University Championship 2024</div>
-                        <div class="activity-secondary">Saturday, Dec 14 • Swinburne Campus</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-primary">RMIT Archery Open</div>
-                        <div class="activity-secondary">Sunday, Dec 16 • RMIT Bundoora</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-primary">Monash Winter League Round 3</div>
-                        <div class="activity-secondary">Saturday, Dec 21 • Monash Clayton</div>
-                    </div>
-                `;
-            }, 800);
+                    // Load upcoming competitions
+                    let competitionsHTML = '';
+                    if (data.upcoming_competitions.length > 0) {
+                        data.upcoming_competitions.forEach(comp => {
+                            competitionsHTML += `
+                                <div class="activity-item">
+                                    <div class="activity-primary">${comp.name}</div>
+                                    <div class="activity-secondary">${comp.date} • ${comp.location || 'TBA'}</div>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        competitionsHTML = '<p style="color: #999; padding: 20px;">No upcoming competitions</p>';
+                    }
+                    document.getElementById('upcoming-competitions').innerHTML = competitionsHTML;
+                }
+            })
+            .catch(error => console.error('Error loading activity:', error));
         }
     </script>
 </body>
