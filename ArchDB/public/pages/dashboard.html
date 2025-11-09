@@ -3,25 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Dashboard</title>
+    <title>🏹 Personal Dashboard - Archery Score System</title>
+    <link href="../css/styles.css" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="../js/archery.js"></script>
     <script src="../js/validation.js"></script>
     <script src="../js/ui.js"></script>
 </head>
 <body>
-    <nav>
-        <a href="../index.html">Home</a>
-        <a href="archers.html">Archers</a>
-        <a href="scores.html">Scores</a>
-        <a href="rounds.html">Rounds</a>
-        <a href="competitions.html">Competitions</a>
-        <a href="dashboard.html">Dashboard</a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
+                <span class="brand-text">Archery Score System</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="archers.html" class="nav-link">Archers</a>
+                <a href="scores.html" class="nav-link">Scores</a>
+                <a href="competitions.html" class="nav-link">Competitions</a>
+                <a href="results.html" class="nav-link">Results</a>
+            </div>
+        </div>
     </nav>
 
-    <main>
-        <h1>Personal Dashboard</h1>
-        <p>View your personal scores and progress.</p>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Personal Dashboard</h1>
+            <p class="page-subtitle">Track your performance and achievements</p>
+        </div>
+    </section>
+
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Archer Profile -->
+        <div class="profile-section">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h2>Aiden Dinh</h2>
+                    <span class="badge badge-active">Active</span>
+                </div>
+                <div class="profile-details">
+                    <div class="profile-item">
+                        <span class="label">Category:</span>
+                        <span>Open Male Recurve</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="label">Equipment:</span>
+                        <span>Recurve Bow</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="label">Email:</span>
+                        <span>aiden.dinh@student.swinburne.edu.au</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="label">Joined:</span>
+                        <span>September 2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" style="margin-top: 2rem; gap: 1rem;">
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-number">58</div>
+                <div class="stat-label">Personal Best</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number">42.5</div>
+                <div class="stat-label">Average Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">Competitions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-number">12</div>
+                <div class="stat-label">Total Scores</div>
+            </div>
+        </div>
+
+        <!-- Score Progression -->
+        <div class="table-card" style="margin-top: 2rem;">
+            <h2 class="card-title">Recent Scores</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Round</th>
+                        <th>Competition</th>
+                        <th>Score</th>
+                        <th>Rank</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>8 Dec 2024</td>
+                        <td>WA 1440</td>
+                        <td>UNIHEC Championship</td>
+                        <td><strong>58</strong></td>
+                        <td><strong>🥇 1st</strong></td>
+                    </tr>
+                    <tr>
+                        <td>3 Dec 2024</td>
+                        <td>FITA 70m</td>
+                        <td>Practice</td>
+                        <td><strong>45</strong></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>1 Dec 2024</td>
+                        <td>WA 1440</td>
+                        <td>Practice</td>
+                        <td><strong>52</strong></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>27 Nov 2024</td>
+                        <td>Indoor 18m</td>
+                        <td>Practice</td>
+                        <td><strong>38</strong></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>24 Nov 2024</td>
+                        <td>FITA 70m</td>
+                        <td>Practice</td>
+                        <td><strong>41</strong></td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Personal Bests by Round -->
+        <div class="table-card" style="margin-top: 2rem;">
+            <h2 class="card-title">Personal Bests by Round</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Round</th>
+                        <th>Personal Best</th>
+                        <th>Date</th>
+                        <th>Club Best</th>
+                        <th>Difference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>WA 1440</strong></td>
+                        <td>58</td>
+                        <td>8 Dec 2024</td>
+                        <td>64 (Thien Anh Doan)</td>
+                        <td style="color: #d97706;">-6 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FITA 70m</strong></td>
+                        <td>45</td>
+                        <td>3 Dec 2024</td>
+                        <td>48 (Vo Huy)</td>
+                        <td style="color: #d97706;">-3 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Indoor 18m</strong></td>
+                        <td>38</td>
+                        <td>27 Nov 2024</td>
+                        <td>42 (Dat Phong Luu)</td>
+                        <td style="color: #d97706;">-4 points</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Competition History -->
+        <div class="table-card" style="margin-top: 2rem;">
+            <h2 class="card-title">Competition History</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Competition</th>
+                        <th>Date</th>
+                        <th>Rank</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>UNIHEC Archery Novice Championship</strong></td>
+                        <td>8 Dec 2024</td>
+                        <td>🥇 1st Place</td>
+                        <td>58</td>
+                        <td><span class="badge badge-completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Swinburne University Championship 2024</strong></td>
+                        <td>14 Dec 2024</td>
+                        <td>Pending</td>
+                        <td>-</td>
+                        <td><span class="badge badge-upcoming">Upcoming</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>RMIT Archery Open</strong></td>
+                        <td>15 Dec 2024</td>
+                        <td>Pending</td>
+                        <td>-</td>
+                        <td><span class="badge badge-upcoming">Upcoming</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="../css/ArchDB_logo.png" alt="ArchDB" class="footer-logo">
+                    <span>Archery Score System</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#help">Help</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Archery Score Recording System. Built for precision and excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
 </body>
 </html>

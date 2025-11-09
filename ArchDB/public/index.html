@@ -3,38 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archery Score System</title>
+    <title>🏹 Archery Score System</title>
+    <link href="css/styles.css" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="js/archery.js"></script>
     <script src="js/validation.js"></script>
     <script src="js/ui.js"></script>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="pages/archers.html">Archers</a>
-        <a href="pages/scores.html">Scores</a>
-        <a href="pages/competitions.html">Competitions</a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
+                <span class="brand-text">Archery Score System</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="pages/archers.html" class="nav-link">Archers</a>
+                <a href="pages/scores.html" class="nav-link">Scores</a>
+                <a href="pages/competitions.html" class="nav-link">Competitions</a>
+                <a href="pages/results.html" class="nav-link">Results</a>
+            </div>
+        </div>
     </nav>
 
-    <main>
-        <h1>Archery Score System</h1>
-        <p>Welcome to the archery scoring system.</p>
-
-        <div id="stats">
-            <!-- Stats will be loaded here -->
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="archery-icon-large">🏹</span>
+                    Precision Scoring
+                </h1>
+                <p class="hero-subtitle">
+                    Professional archery score recording and competition management system
+                </p>
+                <div class="hero-actions">
+                    <a href="pages/scores.html" class="btn btn-primary">
+                        Enter Scores
+                    </a>
+                    <a href="pages/competitions.html" class="btn btn-secondary">
+                        View Competitions
+                    </a>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div id="recent-activity">
-            <!-- Recent activity will be loaded here -->
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <h2 class="section-title">System Overview</h2>
+            <div class="stats-grid" id="stats">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number" id="total-archers">-</div>
+                    <div class="stat-label">Active Archers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number" id="total-scores">-</div>
+                    <div class="stat-label">Total Scores</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-number" id="active-competitions">-</div>
+                    <div class="stat-label">Active Competitions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-number" id="recent-scores">-</div>
+                    <div class="stat-label">Scores This Week</div>
+                </div>
+            </div>
         </div>
-    </main>
+    </section>
+
+    <!-- Recent Activity Section -->
+    <section class="activity-section">
+        <div class="container">
+            <div class="activity-grid">
+                <!-- Recent Scores -->
+                <div class="activity-card">
+                    <h3 class="activity-title">Recent Scores</h3>
+                    <div id="recent-scores-list" class="activity-content">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p>Loading recent scores...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Competitions -->
+                <div class="activity-card">
+                    <h3 class="activity-title">Upcoming Competitions</h3>
+                    <div id="upcoming-competitions" class="activity-content">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p>Loading competitions...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="css/ArchDB_logo.png" alt="ArchDB" class="footer-logo">
+                    <span>Archery Score System</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#help">Help</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Archery Score Recording System. Built for precision and excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Global HTMX config
             htmx.config.globalViewTransitions = true;
+            htmx.config.useTemplateFragments = true;
+
+            // Load initial data
+            loadStats();
+            loadRecentActivity();
+
+            // Global error handling
+            document.addEventListener('htmx:afterRequest', function(evt) {
+                if (evt.detail.xhr.status >= 400) {
+                    showNotification('An error occurred. Please try again.', 'error');
+                }
+            });
         });
+
+        function loadStats() {
+            // Load stats via HTMX or fetch
+            // For now, show placeholder data
+            setTimeout(() => {
+                document.getElementById('total-archers').textContent = '24';
+                document.getElementById('total-scores').textContent = '156';
+                document.getElementById('active-competitions').textContent = '3';
+                document.getElementById('recent-scores').textContent = '28';
+            }, 500);
+        }
+
+        function loadRecentActivity() {
+            // Load recent activity via HTMX or fetch
+            // For now, show placeholder data
+            setTimeout(() => {
+                document.getElementById('recent-scores-list').innerHTML = `
+                    <div class="activity-item">
+                        <div class="activity-primary">Aiden Dinh - 58 points</div>
+                        <div class="activity-secondary">WA 1440 Round • 2 hours ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-primary">Thien Anh Doan - 64 points</div>
+                        <div class="activity-secondary">FITA 70m Round • 4 hours ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-primary">Dat Phong Luu - 61 points</div>
+                        <div class="activity-secondary">WA 1440 Round • 6 hours ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-primary">Vo Huy - 55 points</div>
+                        <div class="activity-secondary">Indoor 18m Round • 8 hours ago</div>
+                    </div>
+                `;
+
+                document.getElementById('upcoming-competitions').innerHTML = `
+                    <div class="activity-item">
+                        <div class="activity-primary">Swinburne University Championship 2024</div>
+                        <div class="activity-secondary">Saturday, Dec 14 • Swinburne Campus</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-primary">RMIT Archery Open</div>
+                        <div class="activity-secondary">Sunday, Dec 16 • RMIT Bundoora</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-primary">Monash Winter League Round 3</div>
+                        <div class="activity-secondary">Saturday, Dec 21 • Monash Clayton</div>
+                    </div>
+                `;
+            }, 800);
+        }
     </script>
 </body>
 </html>

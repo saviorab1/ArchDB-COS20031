@@ -12,15 +12,20 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
-        <h1>🏹 Archery Score System</h1>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="pages/archers.html">Archers</a></li>
-            <li><a href="pages/scores.html">Scores</a></li>
-            <li><a href="pages/competitions.html">Competitions</a></li>
-            <li><a href="pages/results.html">Results</a></li>
-        </ul>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
+                <span class="brand-text">Archery Score System</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="pages/archers.html" class="nav-link">Archers</a>
+                <a href="pages/scores.html" class="nav-link">Scores</a>
+                <a href="pages/competitions.html" class="nav-link">Competitions</a>
+                <a href="pages/results.html" class="nav-link">Results</a>
+            </div>
+        </div>
     </nav>
 
     <!-- Main Content -->
@@ -29,8 +34,23 @@
     </main>
 
     <!-- Footer -->
-    <footer>
-        <p>© 2024 Archery Score Recording System</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="css/ArchDB_logo.png" alt="ArchDB" class="footer-logo">
+                    <span>Archery Score System</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#help">Help</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Archery Score Recording System. Built for precision and excellence.</p>
+            </div>
+        </div>
     </footer>
 
     <!-- HTMX Configuration -->

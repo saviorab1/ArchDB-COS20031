@@ -3,66 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Score Entry</title>
+    <title>🏹 Score Entry - Archery Score System</title>
+    <link href="../css/styles.css" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="../js/archery.js"></script>
     <script src="../js/validation.js"></script>
     <script src="../js/ui.js"></script>
 </head>
 <body>
-    <nav>
-        <a href="../index.html">Home</a>
-        <a href="archers.html">Archers</a>
-        <a href="scores.html">Scores</a>
-        <a href="competitions.html">Competitions</a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
+                <span class="brand-text">Archery Score System</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="archers.html" class="nav-link">Archers</a>
+                <a href="scores.html" class="nav-link active">Scores</a>
+                <a href="competitions.html" class="nav-link">Competitions</a>
+                <a href="results.html" class="nav-link">Results</a>
+            </div>
+        </div>
     </nav>
 
-    <main>
-        <h1>Score Entry</h1>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Enter Scores</h1>
+            <p class="page-subtitle">Record archery scores with 6 arrows per end</p>
+        </div>
+    </section>
 
-        <form id="score-form">
-            <select name="archerId" required>
-                <option value="">Select Archer</option>
-            </select>
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Score Entry Form -->
+        <div class="form-card">
+            <h2 class="card-title">Score Entry Form</h2>
+            <form id="score-form" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Archer *</label>
+                        <select name="archerId" required>
+                            <option value="">Select Archer</option>
+                            <option value="1">Aiden Dinh</option>
+                            <option value="2">Thien Anh Doan</option>
+                            <option value="3">Dat Phong Luu</option>
+                            <option value="4">Vo Huy</option>
+                            <option value="5">Nguyen Do Gia Huy</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Round *</label>
+                        <select name="roundId" required>
+                            <option value="">Select Round</option>
+                            <option value="1">WA 1440</option>
+                            <option value="2">FITA 70m</option>
+                            <option value="3">Indoor 18m</option>
+                        </select>
+                    </div>
+                </div>
 
-            <select name="roundId" required>
-                <option value="">Select Round</option>
-            </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Competition (Optional)</label>
+                        <select name="competitionId">
+                            <option value="">Practice Score</option>
+                            <option value="1">Swinburne Championship</option>
+                            <option value="2">RMIT Open</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date *</label>
+                        <input type="date" name="scoreDate" required>
+                    </div>
+                </div>
 
-            <select name="competitionId">
-                <option value="">Practice Score</option>
-            </select>
+                <!-- Arrow Scores -->
+                <div class="score-section">
+                    <h3 class="section-title">Arrow Scores (0-10)</h3>
+                    <div class="arrow-grid">
+                        <div class="arrow-input-group">
+                            <label>Arrow 1</label>
+                            <input type="number" min="0" max="10" name="arrow1" class="arrow-input" placeholder="0" required>
+                        </div>
+                        <div class="arrow-input-group">
+                            <label>Arrow 2</label>
+                            <input type="number" min="0" max="10" name="arrow2" class="arrow-input" placeholder="0" required>
+                        </div>
+                        <div class="arrow-input-group">
+                            <label>Arrow 3</label>
+                            <input type="number" min="0" max="10" name="arrow3" class="arrow-input" placeholder="0" required>
+                        </div>
+                        <div class="arrow-input-group">
+                            <label>Arrow 4</label>
+                            <input type="number" min="0" max="10" name="arrow4" class="arrow-input" placeholder="0" required>
+                        </div>
+                        <div class="arrow-input-group">
+                            <label>Arrow 5</label>
+                            <input type="number" min="0" max="10" name="arrow5" class="arrow-input" placeholder="0" required>
+                        </div>
+                        <div class="arrow-input-group">
+                            <label>Arrow 6</label>
+                            <input type="number" min="0" max="10" name="arrow6" class="arrow-input" placeholder="0" required>
+                        </div>
+                    </div>
 
-            <input type="date" name="scoreDate" required>
+                    <!-- Total Display -->
+                    <div class="score-total-display">
+                        <div class="score-total-label">TOTAL SCORE</div>
+                        <div class="score-total-number" id="score-total">0</div>
+                    </div>
+                </div>
 
-            <div>
-                <h3>Arrow Scores (0-10)</h3>
-                <input type="number" min="0" max="10" class="arrow-input" name="arrow1" required>
-                <input type="number" min="0" max="10" class="arrow-input" name="arrow2" required>
-                <input type="number" min="0" max="10" class="arrow-input" name="arrow3" required>
-                <input type="number" min="0" max="10" class="arrow-input" name="arrow4" required>
-                <input type="number" min="0" max="10" class="arrow-input" name="arrow5" required>
-                <input type="number" min="0" max="10" class="arrow-input" name="arrow6" required>
-                <div id="score-total">Total: 0</div>
-            </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="resetScoreForm()">Clear</button>
+                    <button type="submit" class="btn btn-primary">Submit Score</button>
+                </div>
+            </form>
+        </div>
 
-            <button type="submit">Submit Score</button>
-        </form>
-
-        <div id="recent-scores">
-            <!-- Recent scores will be loaded here -->
+        <!-- Recent Scores -->
+        <div class="table-card" style="margin-top: 2rem;">
+            <h2 class="card-title">Recent Scores</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Archer</th>
+                        <th>Round</th>
+                        <th>Scores</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>14 Dec 2024</td>
+                        <td>Aiden Dinh</td>
+                        <td>WA 1440</td>
+                        <td>9, 9, 8, 10, 9, 8</td>
+                        <td><strong>53</strong></td>
+                    </tr>
+                    <tr>
+                        <td>14 Dec 2024</td>
+                        <td>Thien Anh Doan</td>
+                        <td>FITA 70m</td>
+                        <td>10, 10, 9, 9, 9, 8</td>
+                        <td><strong>55</strong></td>
+                    </tr>
+                    <tr>
+                        <td>13 Dec 2024</td>
+                        <td>Dat Phong Luu</td>
+                        <td>WA 1440</td>
+                        <td>8, 8, 7, 9, 8, 7</td>
+                        <td><strong>47</strong></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="../css/ArchDB_logo.png" alt="ArchDB" class="footer-logo">
+                    <span>Archery Score System</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#help">Help</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Archery Score Recording System. Built for precision and excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.addEventListener('input', function(e) {
-                if (e.target.classList.contains('arrow-input')) {
-                    updateScoreTotal();
-                }
+            // Update score total on input
+            document.querySelectorAll('.arrow-input').forEach(input => {
+                input.addEventListener('input', updateScoreTotal);
             });
-            updateScoreTotal();
         });
+
+        function resetScoreForm() {
+            document.getElementById('score-form').reset();
+            updateScoreTotal();
+        }
     </script>
 </body>
 </html>

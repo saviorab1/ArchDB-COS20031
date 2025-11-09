@@ -3,68 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archer Management</title>
+    <title>🏹 Archer Management - Archery Score System</title>
+    <link href="../css/styles.css" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="../js/archery.js"></script>
     <script src="../js/validation.js"></script>
     <script src="../js/ui.js"></script>
 </head>
 <body>
-    <nav>
-        <a href="../index.html">Home</a>
-        <a href="archers.html">Archers</a>
-        <a href="scores.html">Scores</a>
-        <a href="competitions.html">Competitions</a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
+                <span class="brand-text">Archery Score System</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="archers.html" class="nav-link active">Archers</a>
+                <a href="scores.html" class="nav-link">Scores</a>
+                <a href="competitions.html" class="nav-link">Competitions</a>
+                <a href="results.html" class="nav-link">Results</a>
+            </div>
+        </div>
     </nav>
 
-    <main>
-        <h1>Archer Management</h1>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Archer Management</h1>
+            <p class="page-subtitle">Manage archers and track their profiles</p>
+        </div>
+    </section>
 
-        <button onclick="showAddArcherModal()">Add Archer</button>
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+            <div class="search-filter">
+                <input type="text" id="search-archers" placeholder="Search by name..." class="search-input">
+                <select id="filter-equipment" class="filter-select">
+                    <option value="">All Equipment</option>
+                    <option value="RECURVE">Recurve</option>
+                    <option value="COMPOUND">Compound</option>
+                    <option value="BAREBOW">Barebow</option>
+                    <option value="LONGBOW">Longbow</option>
+                </select>
+            </div>
+            <button onclick="showAddArcherModal()" class="btn btn-primary">+ Add Archer</button>
+        </div>
 
-        <div id="archers-list">
-            <!-- Archers will be loaded here -->
+        <!-- Archers Table -->
+        <div class="table-card">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Equipment</th>
+                        <th>Category</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="archers-list">
+                    <!-- Sample data -->
+                    <tr>
+                        <td><strong>Aiden Dinh</strong></td>
+                        <td>Male</td>
+                        <td>Recurve</td>
+                        <td>Open Male Recurve</td>
+                        <td>aiden.dinh@student.swinburne.edu.au</td>
+                        <td>
+                            <button class="btn-icon" onclick="editArcher(1)" title="Edit">✏️</button>
+                            <button class="btn-icon" onclick="deleteArcher(1)" title="Delete">🗑️</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thien Anh Doan</strong></td>
+                        <td>Male</td>
+                        <td>Compound</td>
+                        <td>Open Male Compound</td>
+                        <td>thien.doan@student.swinburne.edu.au</td>
+                        <td>
+                            <button class="btn-icon" onclick="editArcher(2)" title="Edit">✏️</button>
+                            <button class="btn-icon" onclick="deleteArcher(2)" title="Delete">🗑️</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dat Phong Luu</strong></td>
+                        <td>Male</td>
+                        <td>Recurve</td>
+                        <td>Open Male Recurve</td>
+                        <td>dat.luu@student.swinburne.edu.au</td>
+                        <td>
+                            <button class="btn-icon" onclick="editArcher(3)" title="Edit">✏️</button>
+                            <button class="btn-icon" onclick="deleteArcher(3)" title="Delete">🗑️</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vo Huy</strong></td>
+                        <td>Male</td>
+                        <td>Barebow</td>
+                        <td>Open Male Barebow</td>
+                        <td>vo.huy@student.swinburne.edu.au</td>
+                        <td>
+                            <button class="btn-icon" onclick="editArcher(4)" title="Edit">✏️</button>
+                            <button class="btn-icon" onclick="deleteArcher(4)" title="Delete">🗑️</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nguyen Do Gia Huy</strong></td>
+                        <td>Male</td>
+                        <td>Recurve</td>
+                        <td>Open Male Recurve</td>
+                        <td>huy.nguyen@student.swinburne.edu.au</td>
+                        <td>
+                            <button class="btn-icon" onclick="editArcher(5)" title="Edit">✏️</button>
+                            <button class="btn-icon" onclick="deleteArcher(5)" title="Delete">🗑️</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Le Minh Duc</strong></td>
+                        <td>Male</td>
+                        <td>Compound</td>
+                        <td>Open Male Compound</td>
+                        <td>duc.le@student.rmit.edu.au</td>
+                        <td>
+                            <button class="btn-icon" onclick="editArcher(6)" title="Edit">✏️</button>
+                            <button class="btn-icon" onclick="deleteArcher(6)" title="Delete">🗑️</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pham Van Long</strong></td>
+                        <td>Male</td>
+                        <td>Recurve</td>
+                        <td>Open Male Recurve</td>
+                        <td>long.pham@student.monash.edu.au</td>
+                        <td>
+                            <button class="btn-icon" onclick="editArcher(7)" title="Edit">✏️</button>
+                            <button class="btn-icon" onclick="deleteArcher(7)" title="Delete">🗑️</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 
-    <div id="archer-modal" style="display: none;">
-        <form id="archer-form">
-            <input name="firstName" placeholder="First Name" required>
-            <input name="lastName" placeholder="Last Name" required>
-            <select name="gender" required>
-                <option value="">Select Gender</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-            </select>
-            <input type="date" name="dateOfBirth" required>
-            <select name="equipment">
-                <option value="RECURVE">Recurve</option>
-                <option value="COMPOUND">Compound</option>
-                <option value="BAREBOW">Barebow</option>
-                <option value="LONGBOW">Longbow</option>
-            </select>
-            <div id="category-display"></div>
-            <input type="email" name="email" placeholder="Email">
-            <input type="tel" name="phoneNumber" placeholder="Phone">
-            <button type="submit">Save</button>
-            <button type="button" onclick="hideModal()">Cancel</button>
-        </form>
+    <!-- Add/Edit Archer Modal -->
+    <div id="archer-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add New Archer</h2>
+                <button class="modal-close" onclick="hideArcherModal()">&times;</button>
+            </div>
+            <form id="archer-form" class="modal-form">
+                <div class="form-group">
+                    <label>First Name *</label>
+                    <input type="text" name="firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name *</label>
+                    <input type="text" name="lastName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender *</label>
+                    <select name="gender" id="gender" required onchange="updateCategoryDisplay()">
+                        <option value="">Select Gender</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Date of Birth *</label>
+                    <input type="date" name="dateOfBirth" id="birthDate" required onchange="updateCategoryDisplay()">
+                </div>
+
+                <div class="form-group">
+                    <label>Equipment *</label>
+                    <select name="equipment" id="equipment" required onchange="updateCategoryDisplay()">
+                        <option value="RECURVE">Recurve</option>
+                        <option value="COMPOUND">Compound</option>
+                        <option value="BAREBOW">Barebow</option>
+                        <option value="LONGBOW">Longbow</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <div class="category-display" id="category-display">
+                        Select gender and birth date
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email">
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" name="phoneNumber">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideArcherModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Archer</button>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="../css/ArchDB_logo.png" alt="ArchDB" class="footer-logo">
+                    <span>Archery Score System</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#help">Help</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Archery Score Recording System. Built for precision and excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
 
     <script>
         function showAddArcherModal() {
+            document.getElementById('modal-title').textContent = 'Add New Archer';
+            document.getElementById('archer-form').reset();
             document.getElementById('archer-modal').style.display = 'block';
+            updateCategoryDisplay();
         }
 
-        function hideModal() {
+        function hideArcherModal() {
             document.getElementById('archer-modal').style.display = 'none';
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('gender').addEventListener('change', updateCategoryDisplay);
-            document.getElementById('birthDate').addEventListener('change', updateCategoryDisplay);
-            document.getElementById('equipment').addEventListener('change', updateCategoryDisplay);
-        });
+        function editArcher(id) {
+            showAddArcherModal();
+            document.getElementById('modal-title').textContent = 'Edit Archer';
+            showNotification('Edit functionality coming soon', 'info');
+        }
+
+        function deleteArcher(id) {
+            if (confirm('Are you sure you want to delete this archer?')) {
+                showNotification('Archer deleted successfully', 'success');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('archer-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>

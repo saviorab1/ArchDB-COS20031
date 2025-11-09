@@ -3,24 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Round Management</title>
+    <title>🏹 Round Definitions - Archery Score System</title>
+    <link href="../css/styles.css" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="../js/archery.js"></script>
     <script src="../js/validation.js"></script>
     <script src="../js/ui.js"></script>
 </head>
 <body>
-    <nav>
-        <a href="../index.html">Home</a>
-        <a href="archers.html">Archers</a>
-        <a href="scores.html">Scores</a>
-        <a href="rounds.html">Rounds</a>
-        <a href="competitions.html">Competitions</a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
+                <span class="brand-text">Archery Score System</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="archers.html" class="nav-link">Archers</a>
+                <a href="scores.html" class="nav-link">Scores</a>
+                <a href="competitions.html" class="nav-link">Competitions</a>
+                <a href="results.html" class="nav-link">Results</a>
+            </div>
+        </div>
     </nav>
 
-    <main>
-        <h1>Round Management</h1>
-        <p>Manage archery rounds and definitions.</p>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Round Definitions</h1>
+            <p class="page-subtitle">Standard archery rounds and their specifications</p>
+        </div>
+    </section>
+
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Rounds Grid -->
+        <div class="rounds-grid">
+            <!-- WA 1440 -->
+            <div class="round-card">
+                <h3>WA 1440</h3>
+                <div class="round-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Distance:</span>
+                        <span>90m, 70m, 50m, 30m</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Ends:</span>
+                        <span>6 per distance (24 total)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Max Score:</span>
+                        <span>1440 points</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Arrows:</span>
+                        <span>144 arrows</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Type:</span>
+                        <span>Outdoor Competition</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FITA 70m -->
+            <div class="round-card">
+                <h3>FITA 70m</h3>
+                <div class="round-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Distance:</span>
+                        <span>70m (Single)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Ends:</span>
+                        <span>20 ends</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Max Score:</span>
+                        <span>720 points</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Arrows:</span>
+                        <span>120 arrows</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Type:</span>
+                        <span>Outdoor Competition</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indoor 18m -->
+            <div class="round-card">
+                <h3>Indoor 18m</h3>
+                <div class="round-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Distance:</span>
+                        <span>18m (Single)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Ends:</span>
+                        <span>20 ends</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Max Score:</span>
+                        <span>600 points</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Arrows:</span>
+                        <span>120 arrows</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Type:</span>
+                        <span>Indoor Competition</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 25m Olympic -->
+            <div class="round-card">
+                <h3>Olympic Round</h3>
+                <div class="round-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Distance:</span>
+                        <span>70m (Outdoor)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Ends:</span>
+                        <span>12 ends (72 arrows)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Max Score:</span>
+                        <span>720 points</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Arrows:</span>
+                        <span>72 arrows</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Type:</span>
+                        <span>International Standard</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practice Round -->
+            <div class="round-card">
+                <h3>Practice Round</h3>
+                <div class="round-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Distance:</span>
+                        <span>Variable</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Ends:</span>
+                        <span>Custom</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Max Score:</span>
+                        <span>Flexible</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Arrows:</span>
+                        <span>Variable</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Type:</span>
+                        <span>Training</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beginners Round -->
+            <div class="round-card">
+                <h3>Beginners Round</h3>
+                <div class="round-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Distance:</span>
+                        <span>20m (Indoor)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Ends:</span>
+                        <span>10 ends</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Max Score:</span>
+                        <span>300 points</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Arrows:</span>
+                        <span>60 arrows</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Type:</span>
+                        <span>Introductory</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Round Information Table -->
+        <div class="table-card" style="margin-top: 2rem;">
+            <h2 class="card-title">Round Comparison</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Round</th>
+                        <th>Type</th>
+                        <th>Distance(s)</th>
+                        <th>Arrows</th>
+                        <th>Max Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>WA 1440</strong></td>
+                        <td>Outdoor</td>
+                        <td>90m, 70m, 50m, 30m</td>
+                        <td>144</td>
+                        <td>1440</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FITA 70m</strong></td>
+                        <td>Outdoor</td>
+                        <td>70m</td>
+                        <td>120</td>
+                        <td>720</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Indoor 18m</strong></td>
+                        <td>Indoor</td>
+                        <td>18m</td>
+                        <td>120</td>
+                        <td>600</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Olympic</strong></td>
+                        <td>Outdoor</td>
+                        <td>70m</td>
+                        <td>72</td>
+                        <td>720</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="../css/ArchDB_logo.png" alt="ArchDB" class="footer-logo">
+                    <span>Archery Score System</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#help">Help</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Archery Score Recording System. Built for precision and excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
 </body>
 </html>

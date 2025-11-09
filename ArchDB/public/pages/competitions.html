@@ -3,24 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Competition Management</title>
+    <title>🏹 Competition Management - Archery Score System</title>
+    <link href="../css/styles.css" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="../js/archery.js"></script>
     <script src="../js/validation.js"></script>
     <script src="../js/ui.js"></script>
 </head>
 <body>
-    <nav>
-        <a href="../index.html">Home</a>
-        <a href="archers.html">Archers</a>
-        <a href="scores.html">Scores</a>
-        <a href="rounds.html">Rounds</a>
-        <a href="competitions.html">Competitions</a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../css/ArchDB_logo.png" alt="ArchDB Logo" class="logo-img">
+                <span class="brand-text">Archery Score System</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="archers.html" class="nav-link">Archers</a>
+                <a href="scores.html" class="nav-link">Scores</a>
+                <a href="competitions.html" class="nav-link active">Competitions</a>
+                <a href="results.html" class="nav-link">Results</a>
+            </div>
+        </div>
     </nav>
 
-    <main>
-        <h1>Competition Management</h1>
-        <p>Manage competitions and registrations.</p>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Competition Management</h1>
+            <p class="page-subtitle">Create, manage and track competitions</p>
+        </div>
+    </section>
+
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+            <h2 style="color: #1a365d; margin: 0;">Competitions</h2>
+            <button onclick="showAddCompetitionModal()" class="btn btn-primary">+ Create Competition</button>
+        </div>
+
+        <!-- Competitions Grid -->
+        <div class="competitions-grid">
+            <!-- Competition Card 1 -->
+            <div class="competition-card">
+                <div class="competition-header">
+                    <h3>Swinburne University Championship 2024</h3>
+                    <span class="badge badge-upcoming">Upcoming</span>
+                </div>
+                <div class="competition-details">
+                    <div class="detail-item">
+                        <span class="detail-label">📅 Date:</span>
+                        <span>Saturday, 14 Dec 2024</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">📍 Location:</span>
+                        <span>Swinburne Hawthorn Campus</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">🎯 Round:</span>
+                        <span>WA 1440</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">👥 Registered:</span>
+                        <span>12 Archers</span>
+                    </div>
+                </div>
+                <div class="competition-actions">
+                    <button class="btn btn-secondary btn-small" onclick="viewCompetition(1)">View</button>
+                    <button class="btn btn-primary btn-small" onclick="editCompetition(1)">Edit</button>
+                </div>
+            </div>
+
+            <!-- Competition Card 2 -->
+            <div class="competition-card">
+                <div class="competition-header">
+                    <h3>RMIT Archery Open</h3>
+                    <span class="badge badge-upcoming">Upcoming</span>
+                </div>
+                <div class="competition-details">
+                    <div class="detail-item">
+                        <span class="detail-label">📅 Date:</span>
+                        <span>Sunday, 15 Dec 2024</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">📍 Location:</span>
+                        <span>RMIT Bundoora Campus</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">🎯 Round:</span>
+                        <span>FITA 70m</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">👥 Registered:</span>
+                        <span>18 Archers</span>
+                    </div>
+                </div>
+                <div class="competition-actions">
+                    <button class="btn btn-secondary btn-small" onclick="viewCompetition(2)">View</button>
+                    <button class="btn btn-primary btn-small" onclick="editCompetition(2)">Edit</button>
+                </div>
+            </div>
+
+            <!-- Competition Card 3 -->
+            <div class="competition-card">
+                <div class="competition-header">
+                    <h3>Monash Winter League Round 3</h3>
+                    <span class="badge badge-upcoming">Upcoming</span>
+                </div>
+                <div class="competition-details">
+                    <div class="detail-item">
+                        <span class="detail-label">📅 Date:</span>
+                        <span>Saturday, 21 Dec 2024</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">📍 Location:</span>
+                        <span>Monash Clayton Campus</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">🎯 Round:</span>
+                        <span>Indoor 18m</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">👥 Registered:</span>
+                        <span>15 Archers</span>
+                    </div>
+                </div>
+                <div class="competition-actions">
+                    <button class="btn btn-secondary btn-small" onclick="viewCompetition(3)">View</button>
+                    <button class="btn btn-primary btn-small" onclick="editCompetition(3)">Edit</button>
+                </div>
+            </div>
+
+            <!-- Competition Card 4 -->
+            <div class="competition-card">
+                <div class="competition-header">
+                    <h3>UNIHEC Archery Novice Championship</h3>
+                    <span class="badge badge-completed">Completed</span>
+                </div>
+                <div class="competition-details">
+                    <div class="detail-item">
+                        <span class="detail-label">📅 Date:</span>
+                        <span>Sunday, 8 Dec 2024</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">📍 Location:</span>
+                        <span>UNIHEC Sports Complex</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">🎯 Round:</span>
+                        <span>WA 1440</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">👥 Registered:</span>
+                        <span>8 Archers</span>
+                    </div>
+                </div>
+                <div class="competition-actions">
+                    <button class="btn btn-secondary btn-small" onclick="viewResults(4)">Results</button>
+                </div>
+            </div>
+        </div>
     </main>
+
+    <!-- Add/Edit Competition Modal -->
+    <div id="competition-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 id="modal-title">Create New Competition</h2>
+                <button class="modal-close" onclick="hideCompetitionModal()">&times;</button>
+            </div>
+            <form id="competition-form" class="modal-form">
+                <div class="form-group">
+                    <label>Competition Name *</label>
+                    <input type="text" name="name" required placeholder="e.g., Swinburne Championship">
+                </div>
+
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" name="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Location *</label>
+                    <input type="text" name="location" required placeholder="e.g., Swinburne Campus">
+                </div>
+
+                <div class="form-group">
+                    <label>Round *</label>
+                    <select name="roundId" required>
+                        <option value="">Select Round</option>
+                        <option value="1">WA 1440</option>
+                        <option value="2">FITA 70m</option>
+                        <option value="3">Indoor 18m</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="3" placeholder="Optional competition details..."></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideCompetitionModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Competition</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="../css/ArchDB_logo.png" alt="ArchDB" class="footer-logo">
+                    <span>Archery Score System</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#help">Help</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Archery Score Recording System. Built for precision and excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <script>
+        function showAddCompetitionModal() {
+            document.getElementById('modal-title').textContent = 'Create New Competition';
+            document.getElementById('competition-form').reset();
+            document.getElementById('competition-modal').style.display = 'block';
+        }
+
+        function hideCompetitionModal() {
+            document.getElementById('competition-modal').style.display = 'none';
+        }
+
+        function editCompetition(id) {
+            showAddCompetitionModal();
+            document.getElementById('modal-title').textContent = 'Edit Competition';
+            showNotification('Edit functionality coming soon', 'info');
+        }
+
+        function viewCompetition(id) {
+            showNotification('Competition details loading...', 'info');
+        }
+
+        function viewResults(id) {
+            window.location.href = 'results.html?comp=' + id;
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('competition-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
